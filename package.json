@@ -2,7 +2,7 @@
   "name": "fib-cdk-pipelines-stack",
   "version": "0.1.0",
   "bin": {
-    "fib-cdkpipelines": "bin/fib-cdkpipelines.js"
+    "fib-param": "bin/fib-param.js"
   },
   "scripts": {
     "build": "tsc",
