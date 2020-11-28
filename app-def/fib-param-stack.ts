@@ -1,4 +1,4 @@
-import { CfnOutput, Construct, Stack, StackProps, Duration } from "@aws-cdk/core";
+import { CfnOutput, Construct, StackProps, Duration } from "@aws-cdk/core";
 import * as lambda from "@aws-cdk/aws-lambda"; // https://docs.aws.amazon.com/cdk/api/latest/docs/aws-lambda-readme.html
 import * as sfn from "@aws-cdk/aws-stepfunctions"; // https://docs.aws.amazon.com/cdk/api/latest/docs/aws-stepfunctions-readme.html
 import * as tasks from "@aws-cdk/aws-stepfunctions-tasks"; // https://docs.aws.amazon.com/cdk/api/latest/docs/aws-stepfunctions-tasks-readme.html
@@ -7,8 +7,9 @@ import { SfnStateMachine } from "@aws-cdk/aws-events-targets"; // https://docs.a
 import * as apigw from "@aws-cdk/aws-apigateway";
 import * as dynamodb from "@aws-cdk/aws-dynamodb";
 import * as s3 from "@aws-cdk/aws-s3";
+import { ParamUtil } from "./param-util"
 
-export class FibParamStack extends Stack {
+export class FibParamStack extends ParamUtil {
   // URL of API Gateway endpoint
   public readonly urlOutput: CfnOutput;
   constructor(scope: Construct, id: string, props?: StackProps) {
