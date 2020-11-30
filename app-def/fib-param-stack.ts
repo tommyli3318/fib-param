@@ -16,9 +16,10 @@ export class FibParamStack extends ParamUtil {
     super(scope, id, props);
 
     const env = {
-      DYNAMODB_TABLE: process.env.DYNAMODB_TABLE!,
-      S3_BUCKET: process.env.S3_BUCKET!
+      DYNAMODB_TABLE: this.getParameter("GSA_FIB_DYNAMODB_TABLE"),
+      S3_BUCKET: this.getParameter("GSA_FIB_S3_BUCKET")
     }
+    
     // define lambdas
     const lambdaA = new lambda.Function(this, "lambdaA", {
       runtime: lambda.Runtime.PYTHON_3_7,
