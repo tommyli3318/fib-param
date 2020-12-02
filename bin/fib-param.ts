@@ -4,3 +4,5 @@ import { FibStack } from "../app-def/fib-stack";
 
 const app = new App();
 new FibStack(app, "stack");
+
+// app.synth();
