@@ -20,7 +20,7 @@ export abstract class ParametersStack extends Stack {
         this.Parameters = new ParamUtil(scope, `${id}-param-util`, props);
         this.nameSpace = this.node.tryGetContext('stack-namespace');
         this.DeployEnv = this.node.tryGetContext('deployment-env');
-        this.construct();
+        //this.construct();
     }
 
     protected generateName(input: string): string {
