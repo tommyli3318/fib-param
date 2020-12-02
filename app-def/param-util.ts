@@ -9,7 +9,7 @@ export class ParamUtil extends Stack {
         this.nameSpace = this.node.tryGetContext('param-namespace');
     }
 
-    public getParameter(paramName: string) {
+    public getParameter(paramName: string): string {
         // looks for parameters in the Parameter Store with the form: [namespace]-[parameter name]
         const stringValue = ssm.StringParameter.fromStringParameterAttributes(this, 'ParamValue', {
             parameterName: `${this.nameSpace}-${paramName}`
