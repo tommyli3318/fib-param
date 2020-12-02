@@ -7,17 +7,17 @@ import { SfnStateMachine } from "@aws-cdk/aws-events-targets"; // https://docs.a
 import * as apigw from "@aws-cdk/aws-apigateway";
 import * as dynamodb from "@aws-cdk/aws-dynamodb";
 import * as s3 from "@aws-cdk/aws-s3";
-import { ParamUtil } from "./param-util"
+import { ParametersStack } from "./param-stack"
 
-export class FibParamStack extends ParamUtil {
+export class FibStack extends ParametersStack {
   // URL of API Gateway endpoint
   public readonly urlOutput: CfnOutput;
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const env = {
-      DYNAMODB_TABLE: this.getParameter("GSA_FIB_DYNAMODB_TABLE"),
-      S3_BUCKET: this.getParameter("GSA_FIB_S3_BUCKET")
+      DYNAMODB_TABLE: this.Parameters.getParameter("GSA_FIB_DYNAMODB_TABLE"),
+      S3_BUCKET: this.Parameters.getParameter("GSA_FIB_S3_BUCKET")
     }
     
     // define lambdas
@@ -116,5 +116,9 @@ export class FibParamStack extends ParamUtil {
     this.urlOutput = new CfnOutput(this, "Url", {
       value: fibApi.url,
     });
+  }
+
+  protected construct() {
+    
   }
 }
