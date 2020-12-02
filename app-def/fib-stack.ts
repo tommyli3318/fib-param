@@ -15,6 +15,7 @@ export class FibStack extends ParametersStack {
   
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+    id = this.generateName(id);
   }
 
   protected construct() {
@@ -25,28 +26,28 @@ export class FibStack extends ParametersStack {
     }
     
     // define lambdas
-    const lambdaA = new lambda.Function(this, "lambdaA", {
+    const lambdaA = new lambda.Function(this, this.generateName("lambdaA"), {
       runtime: lambda.Runtime.PYTHON_3_7,
       code: lambda.Code.fromAsset("app-code"),
       handler: "gsa-lambda-a.lambda_handler", // file is "gsa-lambda-a", function is "lambda_handler"
       environment: env
     });
 
-    const lambdaB = new lambda.Function(this, "lambdaB", {
+    const lambdaB = new lambda.Function(this, this.generateName("lambdaB"), {
       runtime: lambda.Runtime.PYTHON_3_7,
       code: lambda.Code.fromAsset("app-code"),
       handler: "gsa-lambda-b.lambda_handler",
       environment: env
     });
 
-    const lambdaC = new lambda.Function(this, "lambdaC", {
+    const lambdaC = new lambda.Function(this, this.generateName("lambdaC"), {
       runtime: lambda.Runtime.PYTHON_3_7,
       code: lambda.Code.fromAsset("app-code"),
       handler: "gsa-lambda-c.lambda_handler",
       environment: env
     });
 
-    const lambdaD = new lambda.Function(this, "lambdaD", {
+    const lambdaD = new lambda.Function(this, this.generateName("lambdaD"), {
       runtime: lambda.Runtime.PYTHON_3_7,
       code: lambda.Code.fromAsset("app-code"),
       handler: "gsa-lambda-d.lambda_handler",
@@ -54,19 +55,19 @@ export class FibStack extends ParametersStack {
     });
 
     // define step function tasks
-    const taskLambdaA = new tasks.LambdaInvoke(this, "task-invokeA", {
+    const taskLambdaA = new tasks.LambdaInvoke(this, this.generateName("task-invokeA"), {
       lambdaFunction: lambdaA,
       comment: "Returns last sequence value from S3",
       resultPath: "$.outputA",
     });
-    const taskLambdaB = new tasks.LambdaInvoke(this, "task-invokeB", {
+    const taskLambdaB = new tasks.LambdaInvoke(this, this.generateName("task-invokeB"), {
       lambdaFunction: lambdaB,
       comment:
         "Returns last sequence value with last two inserted fibonacci values",
       inputPath: "$.outputA",
       resultPath: "$.outputB",
     });
-    const taskLambdaC = new tasks.LambdaInvoke(this, "task-invokeC", {
+    const taskLambdaC = new tasks.LambdaInvoke(this, this.generateName("task-invokeC"), {
       lambdaFunction: lambdaC,
       comment: "Sum of two values",
       inputPath: "$.outputB",
@@ -76,7 +77,7 @@ export class FibStack extends ParametersStack {
     const stepChain = taskLambdaA.next(taskLambdaB).next(taskLambdaC);
 
     // https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-stepfunctions.StateMachine.html
-    const stateMachine = new sfn.StateMachine(this, "stateMachine", {
+    const stateMachine = new sfn.StateMachine(this, this.generateName("stateMachine"), {
       definition: stepChain,
       stateMachineName: `Run-Lambdas-${this.node.uniqueId}`,
     });
@@ -84,7 +85,7 @@ export class FibStack extends ParametersStack {
     // setting up existing table
     const fibTable = dynamodb.Table.fromTableName(
       this,
-      "fibTable",
+      this.generateName("fibTable"),
       env.DYNAMODB_TABLE
     );
     
@@ -97,27 +98,27 @@ export class FibStack extends ParametersStack {
     // setting up existing S3 bucket
     const namesBucket = s3.Bucket.fromBucketName(
       this,
-      "names-bucket",
+      this.generateName("names-bucket"),
       env.S3_BUCKET
     );
     // granting read access to lambda A
     namesBucket.grantRead(lambdaA);
 
     // aws-event rule, tell step function to run once a day
-    new Rule(this, "ScheduleRule", {
+    new Rule(this, this.generateName("ScheduleRule"), {
       schedule: Schedule.rate(Duration.days(1)),
       targets: [new SfnStateMachine(stateMachine)],
     });
 
     // setting up new rest API with lambda integration with POST method
-    const fibApi = new apigw.RestApi(this, "fib-api", {
+    const fibApi = new apigw.RestApi(this, this.generateName("API"), {
       restApiName: "Fibonacci Service",
     });
     
     const getFibInteractions = new apigw.LambdaIntegration(lambdaD);
     fibApi.root.addMethod("POST", getFibInteractions);
 
-    this.urlOutput = new CfnOutput(this, "Url", {
+    this.urlOutput = new CfnOutput(this, this.generateName("Url"), {
       value: fibApi.url,
     });
   }
