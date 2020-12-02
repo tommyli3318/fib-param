@@ -11,10 +11,8 @@ export class ParamUtil extends Stack {
 
     public getParameter(paramName: string): string {
         // looks for parameters in the Parameter Store with the form: [namespace]-[parameter name]
-        const stringValue = ssm.StringParameter.fromStringParameterAttributes(this, 'ParamValue', {
+        return ssm.StringParameter.fromStringParameterAttributes(this, 'ParamValue', {
             parameterName: `${this.nameSpace}-${paramName}`
         }).stringValue;
-
-        return stringValue;
     }
 }
