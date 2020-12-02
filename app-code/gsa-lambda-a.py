@@ -10,9 +10,10 @@ def lambda_handler(event, context):
 
     table_name = os.getenv('DYNAMODB_TABLE')
     bucket_name = os.getenv('S3_BUCKET')
+    file_name = os.getenv('NAMES_FILE')
 
     s3 = boto3.resource('s3')
-    obj = s3.Object(bucket_name, 'names.txt')
+    obj = s3.Object(bucket_name, file_name)
     body = obj.get()['Body'].read().decode("utf-8")
     
     names = body.splitlines()

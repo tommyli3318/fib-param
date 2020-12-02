@@ -20,7 +20,8 @@ export class FibStack extends ParametersStack {
   protected construct() {
     const env = {
       DYNAMODB_TABLE: this.Parameters.getParameter("DYNAMODB_TABLE"),
-      S3_BUCKET: this.Parameters.getParameter("S3_BUCKET")
+      S3_BUCKET: this.Parameters.getParameter("S3_BUCKET"),
+      NAMES_FILE: this.Parameters.getParameter("S3_BUCKET_FILENAME")
     }
     
     // define lambdas
