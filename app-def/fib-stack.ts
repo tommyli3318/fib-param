@@ -11,13 +11,16 @@ import { ParametersStack } from "./param-stack"
 
 export class FibStack extends ParametersStack {
   // URL of API Gateway endpoint
-  public readonly urlOutput: CfnOutput;
+  public urlOutput: CfnOutput;
+  
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+  }
 
+  protected construct() {
     const env = {
-      DYNAMODB_TABLE: this.Parameters.getParameter("GSA_FIB_DYNAMODB_TABLE"),
-      S3_BUCKET: this.Parameters.getParameter("GSA_FIB_S3_BUCKET")
+      DYNAMODB_TABLE: this.Parameters.getParameter("DYNAMODB_TABLE"),
+      S3_BUCKET: this.Parameters.getParameter("S3_BUCKET")
     }
     
     // define lambdas
@@ -116,9 +119,5 @@ export class FibStack extends ParametersStack {
     this.urlOutput = new CfnOutput(this, "Url", {
       value: fibApi.url,
     });
-  }
-
-  protected construct() {
-    
   }
 }

@@ -4,8 +4,6 @@
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true",
-    "@aws-cdk/core:newStyleStackSynthesis": "true",
-    "param-namespace": "fib-param",
-    "stack-namespace": "fib-param-stack"
+    "@aws-cdk/core:newStyleStackSynthesis": "true"
   }
 }
