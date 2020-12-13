@@ -1,5 +1,5 @@
 {
-    "param-namespace": "GSA-FIB",
-    "stack-namespace": "FIB-PARAM",
+    "param-namespace": "GSA-FIB-2",
+    "stack-namespace": "FIB-PARAM-2",
     "deployment-env": 0
 }
