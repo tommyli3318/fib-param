@@ -14,11 +14,7 @@ export class FibStack extends ParametersStack {
   public urlOutput: CfnOutput;
   
   constructor(scope: Construct, id: string, props?: StackProps) {
-    // id = this.generateName(id); // error: 'super' must be called before accessing 'this'
     super(scope, id, props);
-    //id = this.generateName(id);
-    // TODO: stack ID rename not working, above code only changes local variable id
-    // this.node.id = this.generateName(id); // error: this.node.id is read-only
   }
 
   protected construct() {

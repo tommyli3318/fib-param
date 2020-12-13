@@ -6,7 +6,7 @@ export class ParamUtil extends Stack {
 
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
-        // this.nameSpace = this.node.tryGetContext('param-namespace');
+        this.nameSpace = this.node.tryGetContext('param-namespace');
     }
 
     public getParameter(paramName: string): string {
